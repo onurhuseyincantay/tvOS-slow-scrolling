@@ -20,32 +20,35 @@ struct ContentView: View {
     }
   }
 }
+
 struct UniqItem: Identifiable {
   var id: UUID = UUID()
   
   typealias ID = UUID
 }
+
 struct ListView: View {
-  var uniqItems: [UniqItem] = (0...100).map { _ in UniqItem() }
+  var uniqItems: [UniqItem] = (0...5).map { _ in UniqItem() }
   var body: some View {
     ScrollView(.vertical) {
       LazyVStack {
-        ForEach(uniqItems, id: \.id) { _ in
-          horizontalList
+        ForEach(uniqItems, id: \.id) { item in
+          HorizontalListView()
         }
       }
     }
   }
 }
 
-extension ListView {
-  
-  var horizontalList: some View {
+
+struct HorizontalListView: View {
+  var body: some View {
     ScrollView(.horizontal) {
       LazyHStack {
-        ForEach((0...100).map { _ in UniqItem() }, id: \.id) { index in
+        ForEach(0...100, id: \.self) { index in
           Button(action: { print("\(index)") }) {
-            Color(.red).frame(width: 200, height: 200)
+            Text("Hello World")
+              .frame(width: 200, height: 200)
           }.buttonStyle(CardButtonStyle())
         }
       }
@@ -56,7 +59,6 @@ extension ListView {
 struct GridView: View {
   
   var body: some View {
-    GeometryReader { geometry in
       ScrollView(.vertical) {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
           ForEach((0...100).map { _ in UniqItem() }, id: \.id) { index in
@@ -68,7 +70,6 @@ struct GridView: View {
           }
         }
       }
-    }
   }
 }
 

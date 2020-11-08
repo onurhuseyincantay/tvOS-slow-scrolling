@@ -41,7 +41,7 @@ extension ListView {
             LazyHStack {
                 ForEach(0...100, id: \.self) { index in
                     Button(action: { print("\(index)") }) {
-                        Color.red.frame(width: 100, height: 100)
+                        Color.red.frame(width: 200, height: 200)
                     }.buttonStyle(CardButtonStyle())
                 }
             }
@@ -52,9 +52,12 @@ extension ListView {
 struct GridView: View {
     
     var body: some View {
-        LazyVStack {
-            ForEach(0...100, id: \.self) {
-                Text("\($0)")
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
+            ForEach(0...100, id: \.self) { index in
+                Button(action: { print("\(index)") }) {
+                    Color.red.frame(width: 200, height: 200)
+                }
+                .buttonStyle(CardButtonStyle())
             }
         }
     }

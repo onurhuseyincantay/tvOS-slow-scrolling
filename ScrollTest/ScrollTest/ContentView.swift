@@ -8,63 +8,68 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    enum Tab { case list, grid1, grid2 }
-    
-    
-    var body: some View {
-        TabView {
-            ListView().tabItem { Text("List") }.tag(Tab.list)
-            GridView().tabItem { Text("Grid") }.tag(Tab.grid1)
-            GridView().tabItem { Text("Grid") }.tag(Tab.grid2)
-        }
+  
+  enum Tab { case list, grid1, grid2 }
+  
+  
+  var body: some View {
+    TabView {
+      ListView().tabItem { Text("List") }.tag(Tab.list)
+      GridView().tabItem { Text("Grid") }.tag(Tab.grid1)
+      GridView().tabItem { Text("Grid") }.tag(Tab.grid2)
     }
+  }
 }
 
 struct ListView: View {
-    
-    var body: some View {
-        ScrollView(.vertical) {
-            LazyVStack {
-                ForEach(0...100, id: \.self) { _ in
-                    horizontalList
-                }
-            }
+  
+  var body: some View {
+    ScrollView(.vertical) {
+      LazyVStack {
+        ForEach(0...100, id: \.self) { _ in
+          horizontalList
         }
+      }
     }
+  }
 }
 
 extension ListView {
-    
-    var horizontalList: some View {
-        ScrollView(.horizontal) {
-            LazyHStack {
-                ForEach(0...100, id: \.self) { index in
-                    Button(action: { print("\(index)") }) {
-                        Color.red.frame(width: 200, height: 200)
-                    }.buttonStyle(CardButtonStyle())
-                }
-            }
+  
+  var horizontalList: some View {
+    ScrollView(.horizontal) {
+      LazyHStack {
+        ForEach(0...100, id: \.self) { index in
+          Button(action: { print("\(index)") }) {
+            Color.red.frame(width: 200, height: 200)
+          }.buttonStyle(CardButtonStyle())
         }
+      }
     }
+  }
 }
 
 struct GridView: View {
-    
-    var body: some View {
+  
+  var body: some View {
+    GeometryReader { geometry in
+      ScrollView(.vertical) {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
-            ForEach(0...100, id: \.self) { index in
-                Button(action: { print("\(index)") }) {
-                    Color.red.frame(width: 200, height: 200)
-                }
-                .buttonStyle(CardButtonStyle())
+          ForEach(0...100, id: \.self) { index in
+            Button(action: { print("\(index)") }) {
+              Text("index: \(index)").frame(minWidth: geometry.size.width / 4, minHeight: geometry.size.width / 4)
             }
+            .foregroundColor(.red)
+            .buttonStyle(CardButtonStyle())
+          }
         }
+      }
     }
+  }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+  static var previews: some View {
+    ContentView()
+  }
 }

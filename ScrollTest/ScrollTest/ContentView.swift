@@ -20,13 +20,17 @@ struct ContentView: View {
     }
   }
 }
-
-struct ListView: View {
+struct UniqItem: Identifiable {
+  var id: UUID = UUID()
   
+  typealias ID = UUID
+}
+struct ListView: View {
+  var uniqItems: [UniqItem] = (0...100).map { _ in UniqItem() }
   var body: some View {
     ScrollView(.vertical) {
       LazyVStack {
-        ForEach(0...100, id: \.self) { _ in
+        ForEach(uniqItems, id: \.id) { _ in
           horizontalList
         }
       }
@@ -39,9 +43,9 @@ extension ListView {
   var horizontalList: some View {
     ScrollView(.horizontal) {
       LazyHStack {
-        ForEach(0...100, id: \.self) { index in
+        ForEach((0...100).map { _ in UniqItem() }, id: \.id) { index in
           Button(action: { print("\(index)") }) {
-            Color.red.frame(width: 200, height: 200)
+            Color(.red).frame(width: 200, height: 200)
           }.buttonStyle(CardButtonStyle())
         }
       }
@@ -55,11 +59,11 @@ struct GridView: View {
     GeometryReader { geometry in
       ScrollView(.vertical) {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
-          ForEach(0...100, id: \.self) { index in
+          ForEach((0...100).map { _ in UniqItem() }, id: \.id) { index in
             Button(action: { print("\(index)") }) {
-              Text("index: \(index)").frame(minWidth: geometry.size.width / 4, minHeight: geometry.size.width / 4)
-            }
-            .foregroundColor(.red)
+              Text("index: \(index.id)")
+                .frame(minWidth: 200, minHeight: 200)
+            }.background(Color(.red))
             .buttonStyle(CardButtonStyle())
           }
         }
